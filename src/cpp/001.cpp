@@ -1,6 +1,8 @@
 /*
 This problem was recently asked by Google.
-Given a list of numbers and a number k, return whether any two numbers from the list add up to k.
+Given a list of numbers and a number k, return whether any two
+numbers from the list add up to k.
+
 For example, given [10, 15, 3, 7] and k of 17, return true since 10 + 7 is 17.
 Bonus: Can you do this in one pass?
 */
@@ -17,11 +19,14 @@ bool solve_sort(vector<int> v, int k)
   sort(begin(v), end(v));
   int l = 0, r = v.size() - 1;
 
-  while(l <= r)
+  while (l <= r)
   {
-    if(v[l] + v[r] == k) return true;
-    if(v[l] + v[r] > k)  --r;
-    if(v[l] + v[r] < k)  ++l;
+    if (v[l] + v[r] == k)
+      return true;
+    if (v[l] + v[r] > k)
+      --r;
+    if (v[l] + v[r] < k)
+      ++l;
   }
   return false;
 }
@@ -29,9 +34,9 @@ bool solve_sort(vector<int> v, int k)
 bool solve_hash(vector<int> v, int k)
 {
   unordered_set<int> us;
-  for(auto x : v)
+  for (auto x : v)
   {
-    if(us.count(k-x))
+    if (us.count(k - x))
       return true;
     us.insert(x);
   }
@@ -44,7 +49,7 @@ int main()
   cin >> n >> k;
   vector<int> v(n);
 
-  for(auto &x : v)
+  for (auto &x : v)
     cin >> x;
 
   bool ans_sort = solve_sort(v, k);
