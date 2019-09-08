@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <assert.h>
+
+using namespace std;
+
+struct Node
+{
+  string val;
+  Node *left, *right;
+
+  Node(string val, Node *left = NULL, Node *right = NULL) : val(val), left(left), right(right) {}
+};
+
+string serialize(Node *root)
+{
+  if (root == NULL)
+    return "*";
+  return root->val + " " + serialize(root->left) + " " + serialize(root->right);
+}
+
+int ind = -1;
+vector<string> tokens;
+Node *deserialize()
+{
+  if (tokens[++ind] == "*")
+    return NULL;
+
+  Node *node = new Node(tokens[ind]);
+  node->left = deserialize();
+  node->right = deserialize();
+
+  return node;
+}
+
+Node *deserialize(string s)
+{
+  istringstream iss(s);
+  tokens = vector<string>{istream_iterator<string>{iss},
+                          istream_iterator<string>{}};
+  ind = -1;
+  return deserialize();
+}
+
+main()
+{
+  Node *node = new Node("root", new Node("left", new Node("left.left")), new Node("right"));
+  assert(deserialize(serialize(node))->left->left->val == "left.left");
+
+  return 0;
+}
